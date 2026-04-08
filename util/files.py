@@ -1,4 +1,4 @@
-def load_input(input_file_path):
+def load_input(input_file_path: str):
     with open(input_file_path, 'r') as file:
         data = file.readlines()
 
