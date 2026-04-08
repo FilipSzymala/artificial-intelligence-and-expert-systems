@@ -11,11 +11,11 @@ def load_input(input_file_path):
 
     return tuple(flat_board), rows, cols
 
-def save_solution(solution: list, output_file_path):
-    with open(output_file_path, 'w') as file:
-        # first line from solution list is either length of solution path or -1 if algorithm failed
-        file.write(str(solution[0]) + '\n')
+def save_solution(solution: list, solution_details: list, solution_file_path: str, solution_details_file_path: str):
+    with open(solution_file_path, 'w') as file:
+        for i in solution:
+            file.write(str(i) + '\n')
 
-        # solution path operators
-        if len(solution) > 1:
-            file.write(str(solution[1]) + '\n')
+    with open(solution_details_file_path, 'w') as file:
+        for i in solution_details:
+            file.write(str(i) + '\n')
