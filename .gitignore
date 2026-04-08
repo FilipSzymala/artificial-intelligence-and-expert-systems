@@ -1,4 +1,16 @@
+# Python
+__pycache__/
+*.py[codz]
+*$py.class
+
+# MacOS
 .DS_Store
+
+# idea files (IDE)
 .idea/*
+
+# venv
 venv/
+
+# project output files
 out/*
