@@ -10,7 +10,7 @@ parser = ap.ArgumentParser(
 def parse_args():
     parser.add_argument('strategy', type=str, choices=['bfs', 'dfs', 'astr'],
                         help='Search strategy acronym (available: bfs, dfs, astr)', nargs="?", default='bfs')
-    parser.add_argument('param', type=str,
+    parser.add_argument('search_neighbors_strategy', type=str,
                         help='Searching order (e.g. RDUL) for bfs/dfs or heuristics (hamm, manh) for astr', nargs="?",
                         default='RDUL')
     parser.add_argument('input_file', type=str,

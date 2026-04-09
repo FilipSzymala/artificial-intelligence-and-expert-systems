@@ -2,7 +2,7 @@ from enum import Enum
 from typing import override
 
 
-class Operator(Enum):
+class Operators(Enum):
     LEFT = "L"
     RIGHT = "R"
     UP = "U"
@@ -10,13 +10,12 @@ class Operator(Enum):
 
 
 class Node:
-    def __init__(self: Node, state: tuple, parent: Node = None, depth: int = 0, operator: Operator = "",
-                 path: tuple = None):
+    def __init__(self: Node, state: tuple, parent: Node = None, depth: int = 0, operator: Operators = ""):
         self.state = state
         self.parent = parent
         self.depth = depth
         self.operator = operator
-        self.path = path
+        self.zero_idx = state.index(0)
 
     @override
     def __eq__(self: Node, other: Node | tuple) -> bool:
@@ -31,11 +30,43 @@ class Node:
         return hash(self.state)
 
 
-def get_neighbors(node: Node):
+def get_neighbors(node: Node, cols, rows, search_neighbors_strategy):
     neighbors = []
 
-    neighbors.append(node.parent)
+    zero_idx = node.zero_idx
 
+    for i in search_neighbors_strategy:
+        row = zero_idx // cols
+        col = zero_idx % cols
+        if i == Operators.LEFT.value:
+            if col - 1 >= 0:
+                temp_state = list(node.state)
+                temp_state[zero_idx], temp_state[zero_idx - 1] = temp_state[zero_idx - 1], temp_state[zero_idx]
+
+                new_node = Node(state=tuple(temp_state), parent=node, depth=node.depth + 1, operator=Operators.LEFT)
+                neighbors.append(new_node)
+        elif i == Operators.RIGHT.value:
+            if col + 1 < cols:
+                temp_state = list(node.state)
+                temp_state[zero_idx], temp_state[zero_idx + 1] = temp_state[zero_idx + 1], temp_state[zero_idx]
+
+                new_node = Node(state=tuple(temp_state), parent=node, depth=node.depth + 1, operator=Operators.RIGHT)
+                neighbors.append(new_node)
+        elif i == Operators.UP.value:
+            if row - 1 >= 0:
+                temp_state = list(node.state)
+                temp_state[zero_idx], temp_state[zero_idx - cols] = temp_state[zero_idx - cols], temp_state[zero_idx]
+
+                new_node = Node(state=tuple(temp_state), parent=node, depth=node.depth + 1, operator=Operators.UP)
+                neighbors.append(new_node)
+        elif i == Operators.DOWN.value:
+            if row + 1 < rows:
+                temp_state = list(node.state)
+                temp_state[zero_idx], temp_state[zero_idx + cols] = temp_state[zero_idx + cols], temp_state[zero_idx]
+
+                new_node = Node(state=tuple(temp_state), parent=node, depth=node.depth + 1, operator=Operators.DOWN)
+                neighbors.append(new_node)
+    return neighbors
 
 def is_goal(node: Node, dbs: tuple) -> bool:
     if node == dbs:
