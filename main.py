@@ -17,6 +17,6 @@ if __name__ == '__main__':
     if args.strategy == "bfs":
         solution = bfs(start_node, cols, rows, neighbors_strategy, desired_board_state)
 
-        save_solution(solution.solution, solution.solution_details, "out/solution.txt", "out/solution_details.txt")
+        save_solution(solution.solution, solution.solution_details)
     else:
         print("Strategy not implemented yet")

@@ -1,3 +1,5 @@
+import datetime
+from os import mkdir
 from typing import override
 
 
@@ -45,7 +47,16 @@ def load_input(input_file_path: str):
     return BoardTuple(flat_board, rows, cols), rows, cols
 
 
-def save_solution(solution: list, solution_details: list, solution_file_path: str, solution_details_file_path: str):
+def save_solution(solution: list, solution_details: list):
+    dir_name = f"{datetime.datetime.now().strftime('%d-%m-%Y_%H-%M-%S')}"
+    solution_file_name = "solution.txt"
+    solution_details_file_name = "solution_details.txt"
+
+    mkdir(dir_name)
+
+    solution_file_path = f"{dir_name}/{solution_file_name}"
+    solution_details_file_path = f"{dir_name}/{solution_details_file_name}"
+
     with open(solution_file_path, 'w') as file:
         for i in solution:
             file.write(str(i) + '\n')
