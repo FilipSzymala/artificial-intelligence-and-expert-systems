@@ -21,6 +21,15 @@ class BoardTuple:
                 result += "\n"
         return result
 
+class Solution:
+    def __init__(self, solution_path, solution_length, visited_count, processed_count, max_depth):
+        self.solution_path = solution_path
+        self.solution_length = solution_length
+        self.visited_count = visited_count
+        self.processed_count = processed_count
+        self.max_depth = max_depth
+        self.solution = [solution_length, solution_path]
+        self.solution_details = [solution_length, visited_count, processed_count, max_depth]
 
 def load_input(input_file_path: str):
     with open(input_file_path, 'r') as file:
