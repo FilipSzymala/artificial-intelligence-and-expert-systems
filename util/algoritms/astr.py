@@ -22,22 +22,22 @@ def manhattan(state: tuple, dbs: tuple, cols: int) -> int:
             distance += abs(curr_row - goal_row) + abs(curr_col - goal_col)
     return distance
 
-def astr(S: Node, cols: int, rows: int, search_neighbors_strategy: str, dbs: tuple) -> Solution:
-    if is_goal(S, dbs):
+def astr(start_node: Node, cols: int, rows: int, search_neighbors_strategy: str, dbs: tuple) -> Solution:
+    if is_goal(start_node, dbs):
         return Solution("", 0, 0, 0, 0)
 
-    open_list = []
-    visited = {}
+    open_list = list()
+    visited = dict()
 
     if search_neighbors_strategy == "manh":
-        h = manhattan(S.state, dbs, cols)
+        h = manhattan(start_node.state, dbs, cols)
     elif search_neighbors_strategy == "hamm":
-        h = hamming(S.state, dbs)
+        h = hamming(start_node.state, dbs)
     else:
         raise Exception("Invalid search neighbors strategy (valid choices are: hamm, manh)")
 
-    heapq.heappush(open_list, (h, 0, S))
-    visited[S.state] = h
+    heapq.heappush(open_list, (h, 0, start_node))
+    visited[start_node.state] = h
 
     visited_states_count = 1
     processed_states_count = 0
@@ -58,8 +58,10 @@ def astr(S: Node, cols: int, rows: int, search_neighbors_strategy: str, dbs: tup
         for i in get_neighbors(v, cols, rows):
             if search_neighbors_strategy == "manh":
                 h = manhattan(i.state, dbs, cols)
-            else:
+            elif search_neighbors_strategy == "hamm":
                 h = hamming(i.state, dbs)
+            else:
+                raise Exception("Invalid search neighbors strategy (valid choices are: hamm, manh)")
 
             new_g = g + 1
             new_f = new_g + h

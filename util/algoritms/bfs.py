@@ -6,23 +6,22 @@ from util.nodes import is_goal, get_neighbors, Node
 
 # S - start node
 # dbs - desired board state
-def bfs(S: Node, cols: int, rows: int, search_neighbors_strategy: str, dbs: tuple) -> Solution:
-    if is_goal(S, dbs):
+def bfs(start_node: Node, cols: int, rows: int, search_neighbors_strategy: str, dbs: tuple) -> Solution:
+    if is_goal(start_node, dbs):
         return Solution("", 0, 0, 0, 0)
-    # Kolejka stanow otwartych
-    Q = deque()
-    # Zbior stanow odwiedzonych
-    T = set()
 
-    Q.append(S)
-    T.add(S)
+    open_queue = deque()
+    visited = set()
+
+    open_queue.append(start_node)
+    visited.add(start_node)
 
     visited_states_count = 1
     processed_states_count = 0
     max_depth = 0
 
-    while Q:
-        v = Q.popleft()
+    while open_queue:
+        v = open_queue.popleft()
         processed_states_count += 1
         for i in get_neighbors(v, cols, rows, search_neighbors_strategy):
             if is_goal(i, dbs):
@@ -34,11 +33,11 @@ def bfs(S: Node, cols: int, rows: int, search_neighbors_strategy: str, dbs: tupl
                 return Solution(solution_path[::-1], len(solution_path), visited_states_count, processed_states_count,
                                 max_depth)
 
-            if i not in T:
+            if i not in visited:
                 if i.depth > max_depth:
                     max_depth = i.depth
-                T.add(i)
-                Q.append(i)
+                visited.add(i)
+                open_queue.append(i)
                 visited_states_count += 1
 
     return Solution(None, -1, visited_states_count, processed_states_count, max_depth)

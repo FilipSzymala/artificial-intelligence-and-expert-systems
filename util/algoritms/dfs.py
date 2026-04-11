@@ -4,22 +4,22 @@ from util.files import Solution
 from util.nodes import Node, is_goal, get_neighbors
 
 
-def dfs(S: Node, depth_limit, cols: int, rows: int, search_neighbors_strategy: str, dbs: tuple) -> Solution:
-    if is_goal(S, dbs):
+def dfs(start_node: Node, depth_limit, cols: int, rows: int, search_neighbors_strategy: str, dbs: tuple) -> Solution:
+    if is_goal(start_node, dbs):
         return Solution("", 0, 0, 0, 0)
 
-    stack = []
+    open_stack = list()
     visited = set()
 
-    stack.append(S)
-    visited.add(S)
+    open_stack.append(start_node)
+    visited.add(start_node)
 
     visited_states_count = 1
     processed_states_count = 0
     max_depth = 0
 
-    while stack:
-        v = stack.pop()
+    while open_stack:
+        v = open_stack.pop()
         processed_states_count += 1
 
         for i in reversed(get_neighbors(v, cols, rows, search_neighbors_strategy)):
@@ -35,7 +35,7 @@ def dfs(S: Node, depth_limit, cols: int, rows: int, search_neighbors_strategy: s
                 if i.depth > max_depth:
                     max_depth = i.depth
                 visited.add(i)
-                stack.append(i)
+                open_stack.append(i)
                 visited_states_count += 1
 
     return Solution(None, -1, visited_states_count, processed_states_count, max_depth)
