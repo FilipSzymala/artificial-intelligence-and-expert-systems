@@ -29,8 +29,12 @@ class Node:
     def __hash__(self: Node) -> int:
         return hash(self.state)
 
+    @override
+    def __lt__(self: Node, other: Node) -> bool:
+        return self.depth < other.depth
 
-def get_neighbors(node: Node, cols, rows, search_neighbors_strategy):
+
+def get_neighbors(node: Node, cols, rows, search_neighbors_strategy="LRUD"):
     neighbors = []
 
     zero_idx = node.zero_idx
