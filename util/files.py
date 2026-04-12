@@ -69,10 +69,10 @@ def save_solution(solution: list, solution_details: list, solution_output_path: 
 
 def save_multiple_solutions(solutions: list, solutions_details: list, file_name: str, session_dir: str):
     bfs_dirs = [
-        'bfs_RDUL', 'bfs_RDLU', 'bfs_DRUL', 'bfs_DRLU', 'bfs_LUDR', 'bfs_LURD', 'bfs_ULDR', 'bfs_ULRD'
+        'bfs_rdul', 'bfs_rdlu', 'bfs_drul', 'bfs_drlu', 'bfs_ludr', 'bfs_lurd', 'bfs_uldr', 'bfs_ulrd'
     ]
     dfs_dirs = [
-        'dfs_RDUL', 'dfs_RDLU', 'dfs_DRUL', 'dfs_DRLU', 'dfs_LUDR', 'dfs_LURD', 'dfs_ULDR', 'dfs_ULRD'
+        'dfs_rdul', 'dfs_rdlu', 'dfs_drul', 'dfs_drlu', 'dfs_ludr', 'dfs_lurd', 'dfs_uldr', 'dfs_ulrd'
     ]
     astr_dirs = [
         'astr_hamm', 'astr_manh'
@@ -83,8 +83,8 @@ def save_multiple_solutions(solutions: list, solutions_details: list, file_name:
         dir_path = f"out/{session_dir}/{solution_dir}"
         makedirs(dir_path, exist_ok=True)
 
-        sol_file = f"{dir_path}/{file_name}_sol.txt"
-        sol_details_file = f"{dir_path}/{file_name}_sol_details.txt"
+        sol_file = f"{dir_path}/{file_name}_{solution_dir}_sol.txt"
+        sol_details_file = f"{dir_path}/{file_name}_{solution_dir}_sol_details.txt"
 
         with open(sol_file, 'w') as file:
             for item in solutions[idx]:

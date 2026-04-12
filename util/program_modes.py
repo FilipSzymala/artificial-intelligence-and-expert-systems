@@ -1,16 +1,18 @@
 import datetime
+import os
+import subprocess
+import sys
 
 from util.algoritms.bfs import bfs
 from util.algoritms.dfs import dfs
 from util.algoritms.astr import astr
 from util.nodes import Node
 from util.files import load_input, save_solution, save_multiple_solutions
-from os import listdir
 
 def test_all_mode(args):
     DEPTH_LIMIT = 20
 
-    resource_files = [f"resource/{f}" for f in listdir("resource")]
+    resource_files = [f"resource/{f}" for f in os.listdir("resource")]
 
     total = len(resource_files)
     start_time = datetime.datetime.now()
@@ -64,7 +66,18 @@ def test_all_mode(args):
 
 
 def verify_all_mode(args):
-    pass
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    base_dir = os.path.dirname(base_dir)
+    out_dir = os.path.join(base_dir, 'out')
+
+    if sys.platform == 'win32':
+        script_path = os.path.join(out_dir, 'verify_results.ps1')
+        cmd = ['powershell', '-ExecutionPolicy', 'Bypass', '-File', script_path]
+    else:
+        script_path = os.path.join(out_dir, 'verify_results.sh')
+        cmd = ['bash', script_path]
+
+    subprocess.run(cmd, cwd=out_dir)
 
 def default_mode(args):
     board, rows, cols = load_input(args.input_file)
