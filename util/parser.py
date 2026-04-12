@@ -8,7 +8,7 @@ parser = ap.ArgumentParser(
 
 
 def parse_args():
-    parser.add_argument('--mode', type=str, choices=['test_all', 'verify_all'],
+    parser.add_argument('--mode', type=str, choices=['test_all', 'verify_all', 'generate_charts', 'test_number_of_fails'],
                         help='Special mode (test_all, verify_all)', default=None)
     parser.add_argument('strategy', type=str, choices=['bfs', 'dfs', 'astr', 'verify_all_results'],
                         help='Search strategy acronym (available: bfs, dfs, astr)', nargs="?", default='bfs')

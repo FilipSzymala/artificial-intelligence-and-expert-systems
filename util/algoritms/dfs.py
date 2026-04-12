@@ -1,5 +1,3 @@
-from collections import deque
-
 from util.files import Solution
 from util.nodes import Node, is_goal, get_neighbors
 
