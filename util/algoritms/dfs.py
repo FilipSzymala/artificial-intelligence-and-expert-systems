@@ -38,4 +38,4 @@ def dfs(start_node: Node, depth_limit, cols: int, rows: int, search_neighbors_st
                 open_stack.append(i)
                 visited_states_count += 1
 
-    return Solution(None, -1, visited_states_count, processed_states_count, max_depth)
+    return Solution("", -1, visited_states_count, processed_states_count, max_depth)

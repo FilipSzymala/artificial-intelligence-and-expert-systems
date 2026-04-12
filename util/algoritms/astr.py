@@ -73,4 +73,4 @@ def astr(start_node: Node, cols: int, rows: int, search_neighbors_strategy: str,
                 heapq.heappush(open_list, (new_f, new_g, i))
                 visited_states_count += 1
 
-    return Solution(None, -1, visited_states_count, processed_states_count, max_depth)
+    return Solution("", -1, visited_states_count, processed_states_count, max_depth)

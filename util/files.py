@@ -60,8 +60,11 @@ def save_solution(solution: list, solution_details: list, solution_output_path: 
         solution_details_file_path = f"{dir_path}/solution_sol_details.txt"
 
     with open(solution_file_path, 'w') as file:
-        for item in solution:
-            file.write(str(item) + '\n')
+        if solution[0] == -1:
+            file.write('-1\n')
+        else:
+            for item in solution:
+                file.write(str(item) + '\n')
 
     with open(solution_details_file_path, 'w') as file:
         for item in solution_details:
@@ -87,8 +90,11 @@ def save_multiple_solutions(solutions: list, solutions_details: list, file_name:
         sol_details_file = f"{dir_path}/{file_name}_{solution_dir}_sol_details.txt"
 
         with open(sol_file, 'w') as file:
-            for item in solutions[idx]:
-                file.write(str(item) + '\n')
+            if solutions[idx][0] == -1:
+                file.write('-1\n')
+            else:
+                for item in solutions[idx]:
+                    file.write(str(item) + '\n')
 
         with open(sol_details_file, 'w') as file:
             for item in solutions_details[idx]:
