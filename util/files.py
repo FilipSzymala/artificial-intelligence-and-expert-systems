@@ -1,5 +1,5 @@
 import datetime
-from os import mkdir
+from os import makedirs, path
 from typing import override
 
 
@@ -46,21 +46,50 @@ def load_input(input_file_path: str):
 
     return BoardTuple(flat_board, rows, cols), rows, cols
 
-
-def save_solution(solution: list, solution_details: list):
-    dir_name = f"{datetime.datetime.now().strftime('%d-%m-%Y_%H-%M-%S')}"
-    solution_file_name = "solution.txt"
-    solution_details_file_name = "solution_details.txt"
-
-    mkdir(dir_name)
-
-    solution_file_path = f"{dir_name}/{solution_file_name}"
-    solution_details_file_path = f"{dir_name}/{solution_details_file_name}"
+def save_solution(solution: list, solution_details: list, solution_output_path: str = "", solution_details_output_path: str = ""):
+    if solution_output_path and solution_details_output_path:
+        solution_file_path = solution_output_path
+        solution_details_file_path = solution_details_output_path
+        makedirs(path.dirname(solution_file_path), exist_ok=True)
+        makedirs(path.dirname(solution_details_file_path), exist_ok=True)
+    else:
+        session_dir = datetime.datetime.now().strftime('%d-%m-%Y_%H-%M-%S')
+        dir_path = f"out/{session_dir}"
+        makedirs(dir_path, exist_ok=True)
+        solution_file_path = f"{dir_path}/solution_sol.txt"
+        solution_details_file_path = f"{dir_path}/solution_sol_details.txt"
 
     with open(solution_file_path, 'w') as file:
-        for i in solution:
-            file.write(str(i) + '\n')
+        for item in solution:
+            file.write(str(item) + '\n')
 
     with open(solution_details_file_path, 'w') as file:
-        for i in solution_details:
-            file.write(str(i) + '\n')
+        for item in solution_details:
+            file.write(str(item) + '\n')
+
+def save_multiple_solutions(solutions: list, solutions_details: list, file_name: str, session_dir: str):
+    bfs_dirs = [
+        'bfs_RDUL', 'bfs_RDLU', 'bfs_DRUL', 'bfs_DRLU', 'bfs_LUDR', 'bfs_LURD', 'bfs_ULDR', 'bfs_ULRD'
+    ]
+    dfs_dirs = [
+        'dfs_RDUL', 'dfs_RDLU', 'dfs_DRUL', 'dfs_DRLU', 'dfs_LUDR', 'dfs_LURD', 'dfs_ULDR', 'dfs_ULRD'
+    ]
+    astr_dirs = [
+        'astr_hamm', 'astr_manh'
+    ]
+    solution_dirs = [*bfs_dirs, *dfs_dirs, *astr_dirs]
+
+    for idx, solution_dir in enumerate(solution_dirs):
+        dir_path = f"out/{session_dir}/{solution_dir}"
+        makedirs(dir_path, exist_ok=True)
+
+        sol_file = f"{dir_path}/{file_name}_sol.txt"
+        sol_details_file = f"{dir_path}/{file_name}_sol_details.txt"
+
+        with open(sol_file, 'w') as file:
+            for item in solutions[idx]:
+                file.write(str(item) + '\n')
+
+        with open(sol_details_file, 'w') as file:
+            for item in solutions_details[idx]:
+                file.write(str(item) + '\n')

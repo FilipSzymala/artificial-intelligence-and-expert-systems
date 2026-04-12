@@ -8,7 +8,9 @@ parser = ap.ArgumentParser(
 
 
 def parse_args():
-    parser.add_argument('strategy', type=str, choices=['bfs', 'dfs', 'astr'],
+    parser.add_argument('--mode', type=str, choices=['test_all', 'verify_all'],
+                        help='Special mode (test_all, verify_all)', default=None)
+    parser.add_argument('strategy', type=str, choices=['bfs', 'dfs', 'astr', 'verify_all_results'],
                         help='Search strategy acronym (available: bfs, dfs, astr)', nargs="?", default='bfs')
     parser.add_argument('search_neighbors_strategy', type=str,
                         help='Searching order (e.g. RDUL) for bfs/dfs or heuristics (hamm, manh) for astr', nargs="?",
