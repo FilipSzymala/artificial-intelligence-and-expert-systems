@@ -58,7 +58,7 @@ def plot_criterion(df, column, title, filename):
         ax.set_yscale('log')
 
     ax.set_title('Ogółem')
-    ax.set_ylabel('Kryterium')
+    ax.set_ylabel(title)
     ax.set_xlabel('')
     ax.tick_params(axis='x', rotation=0)
 
@@ -76,6 +76,10 @@ def plot_criterion(df, column, title, filename):
     # BFS
     ax = axes[1, 0]
     bfs = plot_df[plot_df['Strategy'] == 'bfs']
+
+    if column in ['Visited', 'Processed']:
+        ax.set_yscale('log')
+
     if not bfs.empty:
         bfs_summary = bfs.groupby(['Depth', 'Param'])[column].mean().unstack()
         bfs_summary.columns = [c.upper() for c in bfs_summary.columns]

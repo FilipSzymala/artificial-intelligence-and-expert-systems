@@ -34,7 +34,7 @@ def astr(start_node: Node, cols: int, rows: int, search_neighbors_strategy: str,
     elif search_neighbors_strategy == "hamm":
         h = hamming(start_node.state, dbs)
     else:
-        raise Exception("Invalid search neighbors strategy (valid choices are: hamm, manh)")
+        raise ValueError("Invalid search neighbors strategy (valid choices are: hamm, manh)")
 
     heapq.heappush(open_list, (h, 0, start_node))
     visited[start_node.state] = h
@@ -61,7 +61,7 @@ def astr(start_node: Node, cols: int, rows: int, search_neighbors_strategy: str,
             elif search_neighbors_strategy == "hamm":
                 h = hamming(i.state, dbs)
             else:
-                raise Exception("Invalid search neighbors strategy (valid choices are: hamm, manh)")
+                raise ValueError("Invalid search neighbors strategy (valid choices are: hamm, manh)")
 
             new_g = g + 1
             new_f = new_g + h
