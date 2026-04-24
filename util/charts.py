@@ -85,7 +85,7 @@ def plot_criterion(df, column, title, filename):
         bfs_summary.columns = [c.upper() for c in bfs_summary.columns]
         bfs_summary.plot(kind='bar', ax=ax)
     ax.set_title('BFS')
-    ax.set_ylabel('Kryterium')
+    ax.set_ylabel(title)
     ax.set_xlabel('Głębokość')
     ax.tick_params(axis='x', rotation=0)
 
