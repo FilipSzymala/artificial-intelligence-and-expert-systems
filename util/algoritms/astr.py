@@ -56,6 +56,11 @@ def astr(start_node: Node, cols: int, rows: int, search_neighbors_strategy: str,
             return Solution(solution_path[::-1], len(solution_path), visited_states_count, processed_states_count, max_depth)
 
         for i in get_neighbors(v, cols, rows):
+            visited_states_count += 1
+
+            if i.depth > max_depth:
+                max_depth = i.depth
+
             if search_neighbors_strategy == "manh":
                 h = manhattan(i.state, dbs, cols)
             elif search_neighbors_strategy == "hamm":
@@ -68,9 +73,6 @@ def astr(start_node: Node, cols: int, rows: int, search_neighbors_strategy: str,
 
             if i.state not in visited or new_f < visited[i.state]:
                 visited[i.state] = new_f
-                if i.depth > max_depth:
-                    max_depth = i.depth
                 heapq.heappush(open_list, (new_f, new_g, i))
-                visited_states_count += 1
 
     return Solution("", -1, visited_states_count, processed_states_count, max_depth)

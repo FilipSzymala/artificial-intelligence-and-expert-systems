@@ -88,7 +88,11 @@ def test_number_of_fails_mode():
     dfs_count = 0
     bfs_count = 0
     astr_count = 0
-    for root, dirs, files in os.walk('out'):
+
+    dfs_fails = 0
+    bfs_fails = 0
+    astr_fails = 0
+    for root, dirs, files in os.walk('out/24-04-2026_11-45-37'):
         for file in files:
             if file.endswith('_sol.txt'):
                 path = os.path.join(root, file)
@@ -100,6 +104,12 @@ def test_number_of_fails_mode():
                     astr_count += 1
                 with open(path) as f:
                     if f.readline().strip() == '-1':
+                        if "dfs" in file:
+                            dfs_fails += 1
+                        elif "bfs" in file:
+                            bfs_fails += 1
+                        elif "astr" in file:
+                            astr_fails += 1
                         fail_count += 1
                         print(path)
                     else:
@@ -109,15 +119,19 @@ def test_number_of_fails_mode():
     print(f"{success_count} solutions were solved successfully")
     print(f"===================================================================")
     print(f"{dfs_count} solutions were DFS")
+    print(f"{dfs_fails} fails")
     print(f"{bfs_count} solutions were BFS")
+    print(f"{bfs_fails} fails")
     print(f"{astr_count} solutions were ASTR")
+    print(f"{astr_fails} fails")
     print(f"===================================================================")
     print(f"{fail_count + success_count} was the number of all solutions files")
     print(f"===================================================================")
 
 
 def generate_charts_mode():
-    base_out_dir = "out"
+    base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    base_out_dir = os.path.join(base_dir, "out")
 
     subdirs = [d for d in os.listdir(base_out_dir)
                if os.path.isdir(os.path.join(base_out_dir, d)) and not d.endswith('_charts')]
@@ -148,7 +162,7 @@ def generate_charts_mode():
         ('SolLen', 'Długość rozwiązania', 'wyniki_dlugosc.png'),
         ('Visited', 'Liczba stanów odwiedzonych', 'wyniki_odwiedzone.png'),
         ('Processed', 'Liczba stanów przetworzonych', 'wyniki_przetworzone.png'),
-        ('MaxDepth', 'Maksymalna osiągnięta głębokość rekursji', 'wyniki_glebokosc.png')
+        ('MaxDepth', 'Maksymalna osiągnięta głębokość przeszukiwania', 'wyniki_glebokosc.png')
     ]
 
     for col, title, fname in criteria:

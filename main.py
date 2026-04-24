@@ -1,7 +1,7 @@
 from util.parser import *
 
 from util.program_modes import verify_all_mode, test_all_mode, default_mode, generate_charts_mode, \
-    test_number_of_fails_mode
+    test_number_of_fails_mode, rerun_dfs
 
 if __name__ == '__main__':
     args = parse_args()
@@ -9,6 +9,8 @@ if __name__ == '__main__':
 
     if args.mode == "test_all":
         test_all_mode()
+    elif args.mode == "rerun_dfs":
+        rerun_dfs()
     elif args.mode == "verify_all":
         verify_all_mode()
     elif args.mode == "generate_charts":

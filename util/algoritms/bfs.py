@@ -24,20 +24,23 @@ def bfs(start_node: Node, cols: int, rows: int, search_neighbors_strategy: str, 
         v = open_queue.popleft()
         processed_states_count += 1
         for i in get_neighbors(v, cols, rows, search_neighbors_strategy):
-            if is_goal(i, dbs):
-                solution_path = ""
-                curr = i
-                while curr.parent is not None:
-                    solution_path += curr.operator.value
-                    curr = curr.parent
-                return Solution(solution_path[::-1], len(solution_path), visited_states_count, processed_states_count,
-                                max_depth)
+            visited_states_count += 1
+
+            if i.depth > max_depth:
+                max_depth = i.depth
 
             if i not in visited:
-                if i.depth > max_depth:
-                    max_depth = i.depth
                 visited.add(i)
+                if is_goal(i, dbs):
+                    solution_path = ""
+                    curr = i
+                    while curr.parent is not None:
+                        solution_path += curr.operator.value
+                        curr = curr.parent
+                    return Solution(solution_path[::-1], len(solution_path), visited_states_count,
+                                    processed_states_count, max_depth)
                 open_queue.append(i)
-                visited_states_count += 1
+
+
 
     return Solution("", -1, visited_states_count, processed_states_count, max_depth)

@@ -21,6 +21,11 @@ def dfs(start_node: Node, depth_limit, cols: int, rows: int, search_neighbors_st
         processed_states_count += 1
 
         for i in reversed(get_neighbors(v, cols, rows, search_neighbors_strategy)):
+            visited_states_count += 1
+
+            if i.depth > max_depth:
+                max_depth = i.depth
+
             if is_goal(i, dbs):
                 solution_path = ""
                 curr = i
@@ -30,10 +35,7 @@ def dfs(start_node: Node, depth_limit, cols: int, rows: int, search_neighbors_st
                 return Solution(solution_path[::-1], len(solution_path), visited_states_count, processed_states_count, max_depth)
 
             if i not in visited and i.depth <= depth_limit:
-                if i.depth > max_depth:
-                    max_depth = i.depth
                 visited.add(i)
                 open_stack.append(i)
-                visited_states_count += 1
 
     return Solution("", -1, visited_states_count, processed_states_count, max_depth)
