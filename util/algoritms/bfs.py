@@ -37,5 +37,4 @@ def bfs(start_node: Node, cols: int, rows: int, search_neighbors_strategy: str, 
                                     processed_states_count, max_depth)
                 open_queue.append(i)
 
-
     return Solution("", -1, visited_states_count, processed_states_count, max_depth)
