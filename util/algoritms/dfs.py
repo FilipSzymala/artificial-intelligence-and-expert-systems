@@ -1,7 +1,6 @@
 from util.files import Solution
 from util.nodes import Node, is_goal, get_neighbors
 
-
 def dfs(start_node: Node, depth_limit, cols: int, rows: int, search_neighbors_strategy: str, dbs: tuple) -> Solution:
     if is_goal(start_node, dbs):
         return Solution("", 0, 0, 0, 0)

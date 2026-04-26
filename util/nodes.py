@@ -1,13 +1,12 @@
+from __future__ import annotations
 from enum import Enum
 from typing import override
 
-
 class Operators(Enum):
-    LEFT = "L"
     RIGHT = "R"
+    LEFT = "L"
     UP = "U"
     DOWN = "D"
-
 
 class Node:
     def __init__(self: Node, state: tuple, parent: Node = None, depth: int = 0, operator: Operators = ""):
@@ -32,7 +31,6 @@ class Node:
     @override
     def __lt__(self: Node, other: Node) -> bool:
         return self.depth < other.depth
-
 
 def get_neighbors(node: Node, cols, rows, search_neighbors_strategy="LRUD"):
     neighbors = []

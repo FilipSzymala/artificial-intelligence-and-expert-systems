@@ -1,7 +1,7 @@
+from __future__ import annotations
 import datetime
 from os import makedirs, path
 from typing import override
-
 
 class BoardTuple:
     def __init__(self, board: list, rows: int, cols: int):
@@ -50,8 +50,8 @@ def save_solution(solution: list, solution_details: list, solution_output_path: 
     if solution_output_path and solution_details_output_path:
         solution_file_path = solution_output_path
         solution_details_file_path = solution_details_output_path
-        makedirs(path.dirname(solution_file_path), exist_ok=True)
-        makedirs(path.dirname(solution_details_file_path), exist_ok=True)
+        makedirs(path.dirname(solution_file_path) or '.', exist_ok=True)
+        makedirs(path.dirname(solution_details_file_path) or '.', exist_ok=True)
     else:
         session_dir = datetime.datetime.now().strftime('%d-%m-%Y_%H-%M-%S')
         dir_path = f"out/{session_dir}"

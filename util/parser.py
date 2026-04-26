@@ -6,8 +6,9 @@ parser = ap.ArgumentParser(
     epilog='\u00A9 2026 Program made by Filip Szymala & Filip Graczyk',
 )
 
-
 def parse_args():
+    parser.add_argument('--mode', type=str, choices=['test_all', 'verify_all', 'generate_charts', 'test_number_of_fails'],
+                        help='Special mode (test_all, verify_all)', default=None)
     parser.add_argument('strategy', type=str, choices=['bfs', 'dfs', 'astr', 'verify_all_results'],
                         help='Search strategy acronym (available: bfs, dfs, astr)', nargs="?", default='bfs')
     parser.add_argument('search_neighbors_strategy', type=str,
@@ -21,7 +22,6 @@ def parse_args():
                         help='Solution details file path', nargs="?", default='./out/solution_details.txt')
 
     return parser.parse_args()
-
 
 def show_args(parsed_args):
     print(parsed_args)
