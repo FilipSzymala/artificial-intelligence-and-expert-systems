@@ -17,4 +17,3 @@ if __name__ == '__main__':
         test_number_of_fails_mode()
     else:
         default_mode(args)
-

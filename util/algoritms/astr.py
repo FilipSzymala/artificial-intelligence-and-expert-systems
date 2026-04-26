@@ -1,8 +1,6 @@
 import heapq
-
 from util.files import Solution
 from util.nodes import Node, get_neighbors, is_goal
-
 
 def hamming(state: tuple, dbs: tuple) -> int:
     return sum(1 for i in range(len(state)) if state[i] != 0 and state[i] != dbs[i])

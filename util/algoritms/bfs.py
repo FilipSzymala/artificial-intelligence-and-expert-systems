@@ -1,11 +1,7 @@
 from collections import deque
-
 from util.files import Solution
 from util.nodes import is_goal, get_neighbors, Node
 
-
-# S - start node
-# dbs - desired board state
 def bfs(start_node: Node, cols: int, rows: int, search_neighbors_strategy: str, dbs: tuple) -> Solution:
     if is_goal(start_node, dbs):
         return Solution("", 0, 0, 0, 0)
@@ -40,7 +36,6 @@ def bfs(start_node: Node, cols: int, rows: int, search_neighbors_strategy: str, 
                     return Solution(solution_path[::-1], len(solution_path), visited_states_count,
                                     processed_states_count, max_depth)
                 open_queue.append(i)
-
 
 
     return Solution("", -1, visited_states_count, processed_states_count, max_depth)

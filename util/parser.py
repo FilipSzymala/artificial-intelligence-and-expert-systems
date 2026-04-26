@@ -6,7 +6,6 @@ parser = ap.ArgumentParser(
     epilog='\u00A9 2026 Program made by Filip Szymala & Filip Graczyk',
 )
 
-
 def parse_args():
     parser.add_argument('--mode', type=str, choices=['test_all', 'verify_all', 'generate_charts', 'test_number_of_fails'],
                         help='Special mode (test_all, verify_all)', default=None)
@@ -23,7 +22,6 @@ def parse_args():
                         help='Solution details file path', nargs="?", default='./out/solution_details.txt')
 
     return parser.parse_args()
-
 
 def show_args(parsed_args):
     print(parsed_args)

@@ -10,7 +10,6 @@ from util.charts import load_session_data, plot_criterion
 from util.nodes import Node
 from util.files import load_input, save_solution, save_multiple_solutions
 
-
 def test_all_mode():
     DEPTH_LIMIT = 20
 
@@ -66,7 +65,6 @@ def test_all_mode():
     elapsed = endtime - start_time
     print(f"Script processing ended after: {elapsed}")
 
-
 def verify_all_mode():
     base_dir = os.path.dirname(os.path.abspath(__file__))
     base_dir = os.path.dirname(base_dir)
@@ -80,7 +78,6 @@ def verify_all_mode():
         cmd = ['bash', script_path]
 
     subprocess.run(cmd, cwd=out_dir)
-
 
 def test_number_of_fails_mode():
     fail_count = 0
@@ -128,7 +125,6 @@ def test_number_of_fails_mode():
     print(f"{fail_count + success_count} was the number of all solutions files")
     print(f"===================================================================")
 
-
 def generate_charts_mode():
     base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     base_out_dir = os.path.join(base_dir, "out")
@@ -170,7 +166,6 @@ def generate_charts_mode():
         plot_criterion(df, col, title, target_file)
 
     print(f"Generated charts in: {charts_path}")
-
 
 def default_mode(args):
     board, rows, cols = load_input(args.input_file)

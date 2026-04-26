@@ -2,7 +2,6 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import os
 
-
 def load_session_data(session_path):
     results = []
     if not os.path.exists(session_path):
@@ -35,7 +34,6 @@ def load_session_data(session_path):
                             'MaxDepth': int(lines[3])
                         })
     return pd.DataFrame(results)
-
 
 def plot_criterion(df, column, title, filename):
     fig, axes = plt.subplots(2, 2, figsize=(12, 8))

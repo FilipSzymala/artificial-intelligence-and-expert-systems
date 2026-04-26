@@ -9,8 +9,21 @@
 \usepackage{times}
 \usepackage{float}
 \usepackage{booktabs}
+\usepackage{caption}
+\usepackage{parskip}
 
 \geometry{margin=2cm}
+\captionsetup{justification=centering}
+\setlength{\parskip}{1em}
+\setlength{\parindent}{0pt}
+
+\makeatletter
+\renewcommand{\@seccntformat}[1]{\csname the#1\endcsname.\hspace{0.5em}}
+\renewcommand\section{\@startsection{section}{1}{\z@}%
+    {-1em}{1em}{\normalfont\Large\bfseries}}
+\renewcommand\subsection{\@startsection{subsection}{2}{\z@}%
+    {-1em}{1em}{\normalfont\large\bfseries}}
+\makeatother
 
 \begin{document}
 
@@ -24,7 +37,7 @@
 \begin{minipage}[t]{0.5\textwidth}
     \begin{flushright}
         Środa, 10:00 \\
-        \today
+        28.04.2026
     \end{flushright}
 \end{minipage}
 
@@ -44,38 +57,38 @@ Implementacja algorytmów przeszukiwania przestrzeni stanów (BFS, DFS oraz A* z
 \section{Wyniki}
 Program został zaimplementowany w języku \textbf{Python} w wersji 3.14.0.
 
-\vspace{1cm}
+\subsection*{Informacja o nieznalezionych rozwiązaniach}
+W przeprowadzonych testach jedynie dla algorytmu przeszukiwania w głąb (DFS) pojawiły się układy, dla których nie udało się uzyskać rozwiązania, niezależnie od wybranego wariantu przeszukiwania sąsiedztwa.
 
-\noindent
-\textbf{Informacja o nieznalezionych rozwiązaniach:} \\
-W przeprowadzonych testach jedynie dla algorytmu przeszukiwania w głąb (DFS) pojawiły się układy, dla których nie udało się uzyskać rozwiązania, niezależnie od wybranego wariantu przeszukiwania sąsiedztwa.  \\
 Łącznie przeprowadzono 7434 testy (z czego \textbf{3304 wykorzystywały strategię DFS}). Z tej puli poprawnie rozwiązano 7120 układów, jednak w przypadku strategii \textbf{DFS 314 badanych układów pozostało nierozwiązanych}, co przekłada się na około 90\% skuteczności dla analizowanej próbki badawczej. Powodem było osiągnięcie założonego maksymalnego limitu głębokości przeszukiwania, wynoszącego 20 ruchów.
+
+\newpage
 
 \subsection{Kryterium 1: Długość znalezionego rozwiązania}
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.9\textwidth]{wyniki_dlugosc.png}
+    \includegraphics[width=0.72\textwidth]{wyniki_dlugosc.png}
     \caption{Długość znalezionego rozwiązania w zależności od głębokości stanu początkowego.}
 \end{figure}
 
 \subsection{Kryterium 2: Liczba stanów odwiedzonych}
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.9\textwidth]{wyniki_odwiedzone.png}
+    \includegraphics[width=0.72\textwidth]{wyniki_odwiedzone.png}
     \caption{Liczba stanów odwiedzonych w zależności od głębokości stanu początkowego.}
 \end{figure}
 
 \subsection{Kryterium 3: Liczba stanów przetworzonych}
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.9\textwidth]{wyniki_przetworzone.png}
+    \includegraphics[width=0.72\textwidth]{wyniki_przetworzone.png}
     \caption{Liczba stanów przetworzonych w zależności od głębokości stanu początkowego.}
 \end{figure}
 
 \subsection{Kryterium 4: Maksymalna osiągnięta głębokość przeszukiwania}
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.9\textwidth]{wyniki_glebokosc.png}
+    \includegraphics[width=0.72\textwidth]{wyniki_glebokosc.png}
     \caption{Maksymalna osiągnięta głębokość przeszukiwania w zależności od głębokości stanu początkowego.}
 \end{figure}
 \end{document}
