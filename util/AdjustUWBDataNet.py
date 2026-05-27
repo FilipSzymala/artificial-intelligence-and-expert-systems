@@ -8,7 +8,7 @@ from util.measure_time import measure_time
 
 
 class AdjustUWBDataNet(nn.Module):
-    def __init__(self, hidden_neurons, activation_name, drop_out_rate):
+    def __init__(self, hidden_neurons, activation_name, drop_out_rate, init_mode='default'):
         super().__init__()
 
         activations = {
@@ -24,12 +24,28 @@ class AdjustUWBDataNet(nn.Module):
             nn.Linear(hidden_neurons, 2)
         )
 
+        self.init_mode = init_mode
+        if self.init_mode != 'default':
+            self.layers.apply(self.init_weights)
+
+
+    def init_weights(self, module):
+        if isinstance(module, nn.Linear):
+            if self.init_mode == 'xavier':
+                nn.init.xavier_uniform_(module.weight)
+            elif self.init_mode == 'kaiming':
+                # dedicated for relu
+                nn.init.kaiming_uniform_(module.weight, nonlinearity='relu')
+            elif self.init_mode == 'uniform':
+                # random values
+                nn.init.uniform_(module.weight, -0.1, 0.1)
+
     def forward(self, x):
         return self.layers(x)
 
 @measure_time
 def train_model(args, train_data, train_correct_data, test_data, test_correct_data):
-    model = AdjustUWBDataNet(args.neurons, args.activation, args.drop_out_rate)
+    model = AdjustUWBDataNet(args.neurons, args.activation, args.drop_out_rate, args.init_weights)
 
     if args.optimizer == 'adam':
         optimizer = optim.Adam(model.parameters(), lr=args.learning_rate, betas=(args.beta1, args.beta2))

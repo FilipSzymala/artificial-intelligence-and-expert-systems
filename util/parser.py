@@ -131,6 +131,14 @@ def parse_args():
         help='Cierpliwość funkcji na brak poprawy w uczeniu (liczba większa niż 0 włącza early stop) (DEFAULT=20)'
     )
 
+    parser.add_argument(
+        '-in',
+        '--init',
+        choices=['default', 'xavier', 'kaiming', 'uniform'],
+        default='default',
+        help='Sposób inicjalizacji wag neuronów (DEFAULT=default)'
+    )
+
     return parser.parse_args()
 
 
@@ -150,3 +158,4 @@ def show_args(parsed_args: ap.Namespace, short=False):
         print(f"Wielkość pojedynczej partii przekazywanej na wejście sieci wybieranej w losowy sposób: {parsed_args.batch_size}")
         print(f"Współczynnik Dropout: {parsed_args.drop_out_rate}")
         print(f"Cierpliwość Early Stop: {'Wyłączony' if parsed_args.patience == 0 else parsed_args.patience}")
+        print(f"Sposób inicjalizacji wag: {parsed_args.init}")
