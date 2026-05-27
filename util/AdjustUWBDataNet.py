@@ -65,4 +65,4 @@ def train_model(args, train_data, train_correct_data, test_data, test_correct_da
         history_train.append(avg_train_loss)
         history_test.append(loss_test.item())
 
-    return model, history_train, history_test
+    return model, history_train, history_test, predictions_test.numpy()
