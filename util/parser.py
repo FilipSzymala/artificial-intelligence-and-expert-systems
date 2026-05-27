@@ -120,7 +120,7 @@ def parse_args():
         '--drop-out-rate',
         type=float,
         default=0.5,
-        help='Współczynnik drop out (jak duży procent neuronów będzie losowo wyłączany podczas uczenia) (DEFAULT 0.5)'
+        help='Współczynnik drop out (jak duże jest prawdopodobieństwo wyzerowania jednego z wejść) (DEFAULT 0.5)'
     )
 
     parser.add_argument(
