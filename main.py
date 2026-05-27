@@ -47,7 +47,7 @@ if __name__ == "__main__":
     for i in range(args.runs):
         print(f"Niezalezne podejscie nr {i+1}")
 
-        model, h_train, h_test, predictions_test, final_loss, early_stop_triggered, early_stop_epoch = train_model(args, measurements_train, real_train, measurements_test, real_test)
+        model, h_train, h_test, final_loss, predictions_test, early_stop_triggered, early_stop_epoch = train_model(args, measurements_train, real_train, measurements_test, real_test)
 
         if early_stop_triggered:
             print(f"[EARLY STOP] Zatrzymano nauczanie przed ukonczeniem zalozonej ilosci epok w epoce {early_stop_epoch}. Osiągnięte MSE: {final_loss}")
