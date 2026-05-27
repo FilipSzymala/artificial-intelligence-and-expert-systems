@@ -90,8 +90,8 @@ def parse_args():
     parser.add_argument(
         '-ep', '--epochs',
         type=int,
-        default=500,
-        help='Maksymalna liczba pełnych przejść przez cały zbiór treningowy (DEFAULT=500)'
+        default=50,
+        help='Maksymalna liczba pełnych przejść przez cały zbiór treningowy (DEFAULT=50)'
     )
 
     parser.add_argument(
