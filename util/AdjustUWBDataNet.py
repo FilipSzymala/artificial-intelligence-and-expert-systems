@@ -3,6 +3,8 @@ from torch import nn
 from torch import optim
 from torch.utils.data import TensorDataset, DataLoader
 
+from util.measure_time import measure_time
+
 
 class AdjustUWBDataNet(nn.Module):
     def __init__(self, hidden_neurons, activation_name):
@@ -23,6 +25,7 @@ class AdjustUWBDataNet(nn.Module):
     def forward(self, x):
         return self.layers(x)
 
+@measure_time
 def train_model(args, train_data, train_correct_data, test_data, test_correct_data):
     model = AdjustUWBDataNet(args.neurons, args.activation)
 
@@ -59,8 +62,7 @@ def train_model(args, train_data, train_correct_data, test_data, test_correct_da
             predictions_test = model(test_data)
             loss_test = criterion(predictions_test, test_correct_data)
 
-
         history_train.append(avg_train_loss)
         history_test.append(loss_test.item())
-        
+
     return model, history_train, history_test

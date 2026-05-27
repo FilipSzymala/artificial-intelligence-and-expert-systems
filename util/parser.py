@@ -118,5 +118,16 @@ def parse_args():
     return parser.parse_args()
 
 
-def show_args(parsed_args):
-    print(parsed_args)
+def show_args(parsed_args: ap.Namespace, short=False):
+    if short:
+        print(parsed_args)
+    else:
+        print(f"Dane wejsciowe: '{parsed_args.source}'")
+        print(f"Zastosowana funkcja normalizacji danych wejściowych: {parsed_args.scaler}")
+        print(f"Liczba neuronow ukrytych sieci: {parsed_args.neurons}")
+        print(f"Zastosowana funkcja aktywacji: {parsed_args.activation}")
+        print(f"Współczynnik nauki sieci: {parsed_args.learning_rate}")
+        print(f"Zastosowana funkcja optymalizacji sieci {parsed_args.optimizer}")
+        print(f"Współczynniki beta1/momentum oraz beta2 (jeśli występuje): b1={parsed_args.beta1}, b2={parsed_args.beta2 or "brak"} ")
+        print(f"Liczba epok w sieci: {parsed_args.epochs}")
+        print(f"Wielkość pojedynczej partii przekazywanej na wejście sieci wybieranej w losowy sposób: {parsed_args.runs}")
