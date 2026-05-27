@@ -84,7 +84,7 @@ def parse_args():
         '-b2', '--beta2',
         type=float,
         default=0.999,
-        help='Beta 2 wykorzystywany jedynie dla algorytmu optymalizacji ADAM (DEFAULT=0.999)'
+        help='Współczynnik beta 2 wykorzystywany jedynie dla algorytmu optymalizacji ADAM (DEFAULT=0.999)'
     )
 
     parser.add_argument(
@@ -115,6 +115,22 @@ def parse_args():
         help='Metoda normalizacji danych wejściowych (DEFAULT=minmax)'
     )
 
+    parser.add_argument(
+        '-dor',
+        '--drop-out-rate',
+        type=float,
+        default=0.5,
+        help='Współczynnik drop out (jak duży procent neuronów będzie losowo wyłączany podczas uczenia) (DEFAULT 0.5)'
+    )
+
+    parser.add_argument(
+        '-p',
+        '--patience',
+        type=int,
+        default=20,
+        help='Cierpliwość funkcji na brak poprawy w uczeniu (liczba większa niż 0 włącza early stop) (DEFAULT=20)'
+    )
+
     return parser.parse_args()
 
 
@@ -126,8 +142,11 @@ def show_args(parsed_args: ap.Namespace, short=False):
         print(f"Zastosowana funkcja normalizacji danych wejściowych: {parsed_args.scaler}")
         print(f"Liczba neuronow ukrytych sieci: {parsed_args.neurons}")
         print(f"Zastosowana funkcja aktywacji: {parsed_args.activation}")
-        print(f"Współczynnik nauki sieci: {parsed_args.learning_rate}")
+        print(f"Współczynnik nauki sieci (LR): {parsed_args.learning_rate}")
         print(f"Zastosowana funkcja optymalizacji sieci {parsed_args.optimizer}")
-        print(f"Współczynniki beta1/momentum oraz beta2 (jeśli występuje): b1={parsed_args.beta1}, b2={parsed_args.beta2 or "brak"} ")
+        print(f"Współczynniki beta1/momentum oraz beta2 (jeśli występuje): b1={parsed_args.beta1}, b2={parsed_args.beta2 or 'brak'} ")
         print(f"Liczba epok w sieci: {parsed_args.epochs}")
-        print(f"Wielkość pojedynczej partii przekazywanej na wejście sieci wybieranej w losowy sposób: {parsed_args.runs}")
+        print(f"Liczba niezależnych prób uczenia (runs): {parsed_args.runs}")
+        print(f"Wielkość pojedynczej partii przekazywanej na wejście sieci wybieranej w losowy sposób: {parsed_args.batch_size}")
+        print(f"Współczynnik Dropout: {parsed_args.drop_out_rate}")
+        print(f"Cierpliwość Early Stop: {'Wyłączony' if parsed_args.patience == 0 else parsed_args.patience}")

@@ -47,9 +47,13 @@ if __name__ == "__main__":
     for i in range(args.runs):
         print(f"Niezalezne podejscie nr {i+1}")
 
-        model, h_train, h_test, predictions_test = train_model(args, measurements_train, real_train, measurements_test, real_test)
-        if h_test[-1] < best_mse:
-            best_mse = h_test[-1]
+        model, h_train, h_test, predictions_test, final_loss, early_stop_triggered, early_stop_epoch = train_model(args, measurements_train, real_train, measurements_test, real_test)
+
+        if early_stop_triggered:
+            print(f"[EARLY STOP] Zatrzymano nauczanie przed ukonczeniem zalozonej ilosci epok w epoce {early_stop_epoch}. Osiągnięte MSE: {final_loss}")
+
+        if final_loss < best_mse:
+            best_mse = final_loss
             best_model = model
             best_mse_history = list(zip(h_train, h_test))
             best_model_output = scaler_real.inverse_transform(predictions_test)

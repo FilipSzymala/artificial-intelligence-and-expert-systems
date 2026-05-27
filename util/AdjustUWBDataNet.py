@@ -1,3 +1,4 @@
+import copy
 import torch
 from torch import nn
 from torch import optim
@@ -7,7 +8,7 @@ from util.measure_time import measure_time
 
 
 class AdjustUWBDataNet(nn.Module):
-    def __init__(self, hidden_neurons, activation_name):
+    def __init__(self, hidden_neurons, activation_name, drop_out_rate):
         super().__init__()
 
         activations = {
@@ -19,6 +20,7 @@ class AdjustUWBDataNet(nn.Module):
         self.layers = nn.Sequential(
             nn.Linear(2, hidden_neurons),
             activations[activation_name],
+            nn.Dropout(p=drop_out_rate),
             nn.Linear(hidden_neurons, 2)
         )
 
@@ -27,7 +29,7 @@ class AdjustUWBDataNet(nn.Module):
 
 @measure_time
 def train_model(args, train_data, train_correct_data, test_data, test_correct_data):
-    model = AdjustUWBDataNet(args.neurons, args.activation)
+    model = AdjustUWBDataNet(args.neurons, args.activation, args.drop_out_rate)
 
     if args.optimizer == 'adam':
         optimizer = optim.Adam(model.parameters(), lr=args.learning_rate, betas=(args.beta1, args.beta2))
@@ -40,8 +42,16 @@ def train_model(args, train_data, train_correct_data, test_data, test_correct_da
     history_test = []
 
     datatest = TensorDataset(train_data, train_correct_data)
-
     train_loader = DataLoader(datatest, batch_size=args.batch_size, shuffle=True)
+
+    # early stopping mechanism
+    patience = args.patience
+    is_early_stop = patience > 0
+    best_loss = float('inf')
+    epochs_no_improve = 0
+    best_model_weights = None
+    early_stop_triggered = False
+    early_stop_epoch = None
 
     for epoch in range(args.epochs):
         model.train()
@@ -61,8 +71,30 @@ def train_model(args, train_data, train_correct_data, test_data, test_correct_da
         with torch.no_grad():
             predictions_test = model(test_data)
             loss_test = criterion(predictions_test, test_correct_data)
+            current_test_loss = loss_test.item()
 
         history_train.append(avg_train_loss)
         history_test.append(loss_test.item())
 
-    return model, history_train, history_test, predictions_test.numpy()
+        if is_early_stop:
+            if current_test_loss < best_loss:
+                best_loss = current_test_loss
+                epochs_no_improve = 0
+                best_model_weights = copy.deepcopy(model.state_dict())
+            else:
+                epochs_no_improve += 1
+                if epochs_no_improve >= patience:
+                    early_stop_triggered = True
+                    early_stop_epoch = epoch + 1
+                    break
+
+    if is_early_stop and best_model_weights is not None:
+        model.load_state_dict(best_model_weights)
+
+    model.eval()
+    with torch.no_grad():
+        final_predictions = model(test_data)
+
+        final_loss = criterion(final_predictions, test_correct_data).item()
+
+    return model, history_train, history_test, final_loss, final_predictions.numpy(), early_stop_triggered, early_stop_epoch
