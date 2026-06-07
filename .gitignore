@@ -15,4 +15,8 @@ venv/
 # project output files
 out/*
 
+resource/*
+
+sprawozdanie/*
+
 .run

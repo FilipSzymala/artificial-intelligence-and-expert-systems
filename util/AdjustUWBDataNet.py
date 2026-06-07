@@ -4,9 +4,6 @@ from torch import nn
 from torch import optim
 from torch.utils.data import TensorDataset, DataLoader
 
-from util.measure_time import measure_time
-
-
 class AdjustUWBDataNet(nn.Module):
     def __init__(self, hidden_neurons, activation_name, drop_out_rate, init_mode='default'):
         super().__init__()
@@ -34,16 +31,13 @@ class AdjustUWBDataNet(nn.Module):
             if self.init_mode == 'xavier':
                 nn.init.xavier_uniform_(module.weight)
             elif self.init_mode == 'kaiming':
-                # dedicated for relu
                 nn.init.kaiming_uniform_(module.weight, nonlinearity='relu')
             elif self.init_mode == 'uniform':
-                # random values
                 nn.init.uniform_(module.weight, -0.1, 0.1)
 
     def forward(self, x):
         return self.layers(x)
 
-@measure_time
 def train_model(args, train_data, train_correct_data, test_data, test_correct_data):
     model = AdjustUWBDataNet(args.neurons, args.activation, args.drop_out_rate, args.init_weights)
 
