@@ -1,0 +1,158 @@
+\documentclass[12pt,a4paper]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[polish]{babel}
+\usepackage[a4paper, top=2cm, bottom=2.2cm, left=2.5cm, right=2.5cm]{geometry}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{amsmath}
+\usepackage{float}
+\usepackage{microtype}
+\usepackage{array}
+
+
+\geometry{margin=2cm}
+\captionsetup{justification=centering}
+\setlength{\parskip}{1em}
+\setlength{\parindent}{0pt}
+
+\makeatletter
+\renewcommand{\@seccntformat}[1]{\csname the#1\endcsname.\hspace{0.5em}}
+\renewcommand\section{\@startsection{section}{1}{\z@}%
+    {-1em}{1em}{\normalfont\Large\bfseries}}
+\renewcommand\subsection{\@startsection{subsection}{2}{\z@}%
+    {-1em}{1em}{\normalfont\large\bfseries}}
+\makeatother
+
+\begin{document}
+
+\noindent
+\begin{minipage}[t]{0.5\textwidth}
+    \begin{flushleft}
+        Filip Graczyk, 254757 \\
+        Filip Szymala, 254882
+    \end{flushleft}
+\end{minipage}
+\begin{minipage}[t]{0.5\textwidth}
+    \begin{flushright}
+        Środa, 10:00 \\
+        28.05.2026
+    \end{flushright}
+\end{minipage}
+
+\vspace{1cm}
+
+\begin{center}
+    {\Large \textbf{Sztuczna inteligencja i systemy ekspertowe}} \\
+    \vspace{0.2cm}
+    {\large Zadanie 2: Poprawa lokalizacji UWB}
+\end{center}
+
+\vspace{1cm}
+
+\section{Cel}
+Implementacja sztucznej sieci neuronowej w architekturze wielowarstwowego perceptronu (MLP) w celu poprawy dokładności odczytów lokalizacji robota w przestrzeniach zamkniętych, pozyskiwanych za pomocą technologii ultra-wideband (UWB). Analizie poddano wpływ parametrów konfiguracyjnych, struktury ukrytej oraz metod przeciwdziałających przeuczaniu na skuteczność modelu.
+\section{Wyniki}
+Program został zaimplementowany w języku \textbf{Python} w wersji 3.14.0 z wykorzystaniem biblioteki \textbf{PyTorch} (2.12.0) do stworzenia i uczenia sieci neuronowej oraz biblioteka \textbf{scikit-learn} (1.8.0) do normalizacji danych wejściowych.
+
+\subsection{Skalowanie danych}
+Wszystkie dane zostały przeskalowane z wykorzystaniem metody minmax zaimplementowanej w bibliotece scikit-learn (w wersji 1.8.0) do wartości z zakresu [0,1]. 
+Metoda ta wykorzustuje następujący wzór:
+\begin{equation}
+X_{std} = \frac{X - X_{min}}{X_{max} - X_{min}}
+\end{equation}
+
+\begin{equation}
+X_{scaled} = X_{std} \cdot (max - min) + min
+\end{equation}
+
+Gdzie min oraz max definiują zakres naszych wartości po przeskalowaniu (domyślnie od 0 do 1).
+
+\newpage
+\subsection{Parametry wybranych wariantów sieci}
+ 
+Sieć ma architekturę: 2~wejścia (zmierzone $x$, $y$) $\to$ warstwa ukryta $\to$ 2~wyjścia (skorygowane $\hat{x}$, $\hat{y}$); Dla każdej funkcji aktywacji wybrano wariant o~najniższym MSE na~zbiorze testowym.
+ 
+\vspace{4pt}
+ 
+\begin{table}[H]
+\centering
+\label{tab:params}
+\small
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.4}
+\begin{tabularx}{\textwidth}{|>{\raggedright\arraybackslash}p{5.2cm}|>{\centering\arraybackslash}X|>{\centering\arraybackslash}X|>{\centering\arraybackslash}X|}
+\hline
+\textbf{}
+    & \textbf{ReLU}
+    & \textbf{Tanh}
+    & \textbf{Logistic} \\
+\hline
+Funkcja aktywacji
+    & ReLU
+    & Tangens hiperboliczny
+    & Logistyczna \\ \hline
+Liczba neuronów ukrytych
+    & 64 & 16 & 16 \\ \hline
+
+Inicjalizacja wag & \multicolumn{3}{c|}{Kaiming uniform (domyślne w PyTorch), $\mathcal{U}(-b,\,b)$, $b = \frac{1}{\sqrt{n_\text{wej}}}$}  \\ \hline
+\quad warstwa wejściowa $(n_\text{wej}=2)$
+    & \multicolumn{3}{c|}{$\mathcal{U}(-0{,}707;\;0{,}707)$} \\ \hline
+\quad warstwa wyjściowa
+    & $\mathcal{U}(-0{,}125;\;0{,}125)$
+    & $\mathcal{U}(-0{,}250;\;0{,}250)$
+    & $\mathcal{U}(-0{,}250;\;0{,}250)$ \\ \hline
+
+Optymalizator
+    & \multicolumn{3}{c|}{Adam} \\ \hline
+Współczynnik uczenia $\alpha$
+    & $0{,}001$ & $0{,}05$ & $0{,}05$ \\ \hline
+Współczynniki $\beta_1$, $\beta_2$
+    & \multicolumn{3}{c|}{(domyślne w PyTorch dla Adam) $\beta_1$ = $0{,}9$ ; $\beta_2$ = $0{,}999$} \\ \hline
+
+Maks. liczba epok
+    & \multicolumn{3}{c|}{300} \\ \hline
+Wczesne zatrzymywanie (cierpliwość)
+    & \multicolumn{3}{c|}{20 epok bez poprawy MSE testowego} \\ \hline
+
+Rozmiar mini-wsadu
+    & 128 & 64 & 64 \\ \hline
+Dropout
+    & \multicolumn{3}{c|}{0{,}0 (wyłączony)} \\ \hline
+Liczba niezależnych realizacji
+    & \multicolumn{3}{c|}{5} \\
+\hline
+\end{tabularx}
+\end{table}
+
+
+\newpage
+
+\subsubsection{Kryterium 1: Wielkość błędu średniokwadratowego (MSE) w poszczególnych epokach uczenia na zbiorze treningowym danych statycznych}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.72\textwidth]{mse_train.png}
+\end{figure}
+
+\subsubsection{Kryterium 2: Wielkość błędu średniokwadratowego (MSE) w poszczególnych epokach w trakcie testowania sieci na danych dynamicznych}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.72\textwidth]{mse_test.png}
+\end{figure}
+
+\subsubsection{Kryterium 3: Dystrybuanty błędów wyznaczone dla skorygowanych wartości wszystkich wyników pomiarów dynamicznych}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.72\textwidth]{cdf.png}
+\end{figure}
+
+\subsubsection{Kryterium 4: Zestawienie najlepszego wariantu sieci wraz z początkowymi pomiarami i trasą robota}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.72\textwidth]{scatter.png}
+\end{figure}
+
+\end{document}
